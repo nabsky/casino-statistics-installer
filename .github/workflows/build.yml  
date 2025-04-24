@@ -1,0 +1,23 @@
+name: Build Casino Statistics Installer
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Inno Setup
+      run: choco install innosetup -y
+    - name: Download PostgreSQL Installer
+      run: |
+        curl -o postgresql-15.12-1-windows-x64.exe https://get.enterprisedb.com/postgresql/postgresql-15.12-1-windows-x64.exe
+    - name: Compile Installer
+      run: iscc setup.iss
+    - name: Upload Installer
+      uses: actions/upload-artifact@v3
+      with:
+        name: casino-statistics-installer
+        path: Output/statistics-setup.exe

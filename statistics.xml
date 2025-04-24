@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service>
+ <id>casino-statistics</id>
+ <name>Casino Statistics Service</name>
+ <description>Collects data from casino displays</description>
+ <executable>java</executable>
+ <arguments>-cp "." -jar "statistics.jar"</arguments>
+ <logmode>rotate</logmode>
+ <startmode>Automatic</startmode>
+</service>
