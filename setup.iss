@@ -43,7 +43,7 @@ Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=
 Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:4567 OUT)"" "; StatusMsg: "Removing Firewall Exception (TCP:4567 OUT)"; Flags: runhidden
 Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:5432 IN)"" "; StatusMsg: "Removing Firewall Exception (TCP:5432 IN)"; Flags: runhidden
 Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:5432 OUT)"" "; StatusMsg: "Removing Firewall Exception (TCP:5432 OUT)"; Flags: runhidden
-Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""Casino Statistics (TCP:4567 IN)"" action=allow protocol=TCP localport=4567 dir=in"; StatusMsg: "Adding Firewall Exception (TCP:4567 IN)"; Flags: runhidden
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""Casino Statistics (TCP:4567 IN)"" action=allow protocol=TCP localport=4567 dir=in";copy; StatusMsg: "Adding Firewall Exception (TCP:4567 IN)"; Flags: runhidden
 Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""Casino Statistics (TCP:4567 OUT)"" action=allow protocol=TCP localport=4567 dir=out"; StatusMsg: "Adding Firewall Exception (TCP:4567 OUT)"; Flags: runhidden
 Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""Casino Statistics (TCP:5432 IN)"" action=allow protocol=TCP localport=5432 dir=in"; StatusMsg: "Adding Firewall Exception (TCP:5432 IN)"; Flags: runhidden
 Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""Casino Statistics (TCP:5432 OUT)"" action=allow protocol=TCP localport=5432 dir=out"; StatusMsg: "Adding Firewall Exception (TCP:5432 OUT)"; Flags: runhidden
@@ -89,19 +89,9 @@ begin
   end;
 end;
 
-function InitializeSetup: Boolean;
-begin
-  Result := True;
-
-  // Проверка прав администратора
-  if not IsAdminLoggedOn then
-  begin
-    MsgBox('This installer requires administrator privileges to proceed. Please run the installer as an administrator and try again.', mbError, MB_OK);
-    Result := False;
-  end;
-end;
-
 procedure InitializeWizard;
+var
+  WarningLabel: TNewStaticText;
 begin
   { Create the credentials input page }
   UserPage := CreateInputQueryPage(wpWelcome,
@@ -113,6 +103,17 @@ begin
   UserPage.Values[0] := 'stat';
   UserPage.Values[1] := 'statuser';
   UserPage.OnNextButtonClick := @ValidateInput;
+
+  { Create a warning label on the Welcome page }
+  WarningLabel := TNewStaticText.Create(WizardForm);
+  WarningLabel.Parent := WizardForm.WelcomePage;
+  WarningLabel.Caption := 'WARNING! Please ensure the installer is run with administrator privileges!';
+  WarningLabel.Font.Color := clRed;
+  WarningLabel.Font.Style := [fsBold];
+  WarningLabel.Left := WizardForm.WelcomeLabel1.Left;
+  WarningLabel.Top := WizardForm.WelcomeLabel1.Top + WizardForm.WelcomeLabel1.Height + ScaleY(20);
+  WarningLabel.Width := WizardForm.WelcomeLabel1.Width;
+  WarningLabel.AutoSize := True;
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
