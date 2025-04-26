@@ -2,17 +2,14 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Casino Statistics"
-#define MyAppVersion "2.3"
+#define MyAppVersion "2.4"
 #define MyAppPublisher "SET-Europe, UAB"
 #define MyAppURL "http://set-europe.com"
 
 [Setup]
-; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
-; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{42114860-D9DE-4C53-AF9C-38A5D1715376}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -20,8 +17,6 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-; Uncomment the following line to run in non administrative install mode (install for current user only.)
-;PrivilegesRequired=lowest
 OutputBaseFilename=statistics-setup
 Compression=lzma
 SolidCompression=yes
@@ -45,27 +40,26 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 ; Add/Remove firewall exception
 ; Need to remove exceptions first when updating
 Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:4567 IN)"" "; StatusMsg: "Removing Firewall Exception (TCP:4567 IN)"; Flags: runhidden
-Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:4567 OUT)"" ";  StatusMsg: "Removing Firewall Exception (TCP:4567 OUT)"; Flags: runhidden
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:4567 OUT)"" "; StatusMsg: "Removing Firewall Exception (TCP:4567 OUT)"; Flags: runhidden
 Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:5432 IN)"" "; StatusMsg: "Removing Firewall Exception (TCP:5432 IN)"; Flags: runhidden
-Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:5432 OUT)"" ";  StatusMsg: "Removing Firewall Exception (TCP:5432 OUT)"; Flags: runhidden
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:5432 OUT)"" "; StatusMsg: "Removing Firewall Exception (TCP:5432 OUT)"; Flags: runhidden
 Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""Casino Statistics (TCP:4567 IN)"" action=allow protocol=TCP localport=4567 dir=in"; StatusMsg: "Adding Firewall Exception (TCP:4567 IN)"; Flags: runhidden
 Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""Casino Statistics (TCP:4567 OUT)"" action=allow protocol=TCP localport=4567 dir=out"; StatusMsg: "Adding Firewall Exception (TCP:4567 OUT)"; Flags: runhidden
-Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""Casino Statistics (TCP:5432 IN)"" action=allow protocol=TCP localport=5432 dir=in"; StatusMsg: "Adding Firewall Exception (TCP:4567 IN)"; Flags: runhidden
-Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""Casino Statistics (TCP:5432 OUT)"" action=allow protocol=TCP localport=5432 dir=out"; StatusMsg: "Adding Firewall Exception (TCP:4567 OUT)"; Flags: runhidden
-Filename: "{app}\statistics.exe"; Flags: runhidden;  StatusMsg: Installing Service; Parameters: install
-Filename: "{tmp}\postgresql-15.12-1-windows-x64.exe"; Flags: runminimized;  StatusMsg: Installing PostgreSQL; Parameters: "--mode unattended --unattendedmodeui minimal --disable-components stackbuilder --superpassword postgres --servicepassword postgres --prefix ""{app}\PostgreSQL"" --datadir ""{app}\PostgreSQL\data"" --servicename casino-statistics-db"
-Filename: "{app}\statistics.exe"; Flags: runhidden;  StatusMsg: Starting Service; Parameters: start
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""Casino Statistics (TCP:5432 IN)"" action=allow protocol=TCP localport=5432 dir=in"; StatusMsg: "Adding Firewall Exception (TCP:5432 IN)"; Flags: runhidden
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""Casino Statistics (TCP:5432 OUT)"" action=allow protocol=TCP localport=5432 dir=out"; StatusMsg: "Adding Firewall Exception (TCP:5432 OUT)"; Flags: runhidden
+Filename: "{app}\statistics.exe"; Flags: runhidden; StatusMsg: Installing Service; Parameters: install
+Filename: "{tmp}\postgresql-15.12-1-windows-x64.exe"; Flags: runminimized; StatusMsg: Installing PostgreSQL; Parameters: "--mode unattended --unattendedmodeui minimal --disable-components stackbuilder --superpassword postgres --servicepassword postgres --prefix ""{app}\PostgreSQL"" --datadir ""{app}\PostgreSQL\data"" --servicename casino-statistics-db"
+Filename: "{app}\statistics.exe"; Flags: runhidden; StatusMsg: Starting Service; Parameters: start
 Filename: "http://localhost:4567"; Flags: shellexec runasoriginaluser postinstall; Description: "Open Casino Statistics Web Service."
 
 [UninstallRun]
 Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:4567 IN)"" "; StatusMsg: "Removing Firewall Exception (TCP:4567 IN)"; Flags: runhidden
-Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:4567 OUT)"" ";  StatusMsg: "Removing Firewall Exception (TCP:4567 OUT)"; Flags: runhidden
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:4567 OUT)"" "; StatusMsg: "Removing Firewall Exception (TCP:4567 OUT)"; Flags: runhidden
 Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:5432 IN)"" "; StatusMsg: "Removing Firewall Exception (TCP:5432 IN)"; Flags: runhidden
-Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:5432 OUT)"" ";  StatusMsg: "Removing Firewall Exception (TCP:5432 OUT)"; Flags: runhidden
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""Casino Statistics (TCP:5432 OUT)"" "; StatusMsg: "Removing Firewall Exception (TCP:5432 OUT)"; Flags: runhidden
 Filename: "{app}\statistics.exe"; Flags: runhidden; Parameters: stop; RunOnceId: casino-statistics-stop
 Filename: "{app}\statistics.exe"; Flags: runhidden; Parameters: uninstall; RunOnceId: casino-statistics-uninstall
 Filename: "{app}\PostgreSQL\uninstall-postgresql.exe"; Flags: runminimized; Parameters: --mode unattended; RunOnceId: casino-statistics-db-uninstall
-
 
 [Code]
 var
@@ -94,38 +88,47 @@ begin
     Result := False;
   end;
 end;
-  
+
+function InitializeSetup: Boolean;
+begin
+  Result := True;
+
+  // Проверка прав администратора
+  if not IsAdminLoggedOn then
+  begin
+    MsgBox('This installer requires administrator privileges to proceed. Please run the installer as an administrator and try again.', mbError, MB_OK);
+    Result := False;
+  end;
+end;
+
 procedure InitializeWizard;
 begin
-  { Create the pages }
- 
+  { Create the credentials input page }
   UserPage := CreateInputQueryPage(wpWelcome,
     'Casino Statistics Service', 'Credentials Setup',
     'Please specify username and password that will be used to access Casino Statistics');
   UserPage.Add('Database:', False);
   UserPage.Add('Username:', False);
   UserPage.Add('Password:', True);
-  UserPage.Values[0]:= 'stat';
-  UserPage.Values[1]:= 'statuser';
+  UserPage.Values[0] := 'stat';
+  UserPage.Values[1] := 'statuser';
   UserPage.OnNextButtonClick := @ValidateInput;
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
-  if CurStep = ssInstall  then begin
+  if CurStep = ssInstall then begin
     database := UserPage.Values[0];
     username := UserPage.Values[1];
     password := UserPage.Values[2];
     ForceDirectories(ExpandConstant('{app}'));
     SaveStringToFile(ExpandConstant('{app}') + '\statistics.properties',
-    'host = 127.0.0.1' + #13#10 +
-    'database = ' + database + #13#10 
-    'user = '+ username + #13#10  + 
-    'pass = ' + password + #13#10  +
-    'user1 = caixauser' + #13#10  +
-    'pass1 = chipset' + #13#10 ,
-    False);
+      'host = 127.0.0.1' + #13#10 +
+      'database = ' + database + #13#10 +
+      'user = ' + username + #13#10 +
+      'pass = ' + password + #13#10 +
+      'user1 = caixauser' + #13#10 +
+      'pass1 = chipset' + #13#10,
+      False);
   end;
 end;
-
-
